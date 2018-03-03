@@ -1,24 +1,10 @@
-FROM centos:centos6
+FROM php:7-apache
 MAINTAINER Marien Fressinaud <dev@marienfressinaud.fr>
 
-# Install packages
-RUN yum update -y
-RUN yum install -y vim httpd mysql-server php php-mysql php-pdo php-xml
+RUN apt-get update && \
+    apt-get install -y libcurl4-openssl-dev libjpeg62-turbo-dev \
+    libmcrypt-dev libpng-dev libicu-dev libgmp-dev libsqlite3-dev && \
+    ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h && \
+    docker-php-ext-install curl mbstring gd intl json zip gmp \
+        pdo pdo_sqlite
 
-# Configure the database
-ADD init.sh /tmp/init.sh
-ADD dump_freshrss.sql /tmp/dump_freshrss.sql
-RUN chmod 775 /tmp/init.sh
-RUN service mysqld start ; ./tmp/init.sh ; service mysqld stop
-RUN rm /tmp/dump_freshrss.sql
-RUN rm /tmp/init.sh
-
-# apache user has UID 1000 and GID 100
-# You may have to change these values to match with your current "host" user
-RUN usermod -u 1000 -g 100 apache
-
-ADD start.sh /start.sh
-
-ENTRYPOINT ["/bin/bash", "-e", "/start.sh"]
-
-EXPOSE 80

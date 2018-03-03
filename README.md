@@ -55,31 +55,13 @@ directory in the corresponding running container. Do not forget to map port
 $ docker run -t -i -v /path/to/FreshRSS:/var/www/html -p 8080:80 marienfressinaud/freshrss
 ```
 
-Now, you have access to a shell where you can do whatever you want (you have a
-root access!). In a basic usage, you should not need this shell. Just
-keep it open and read the next section :)
-
-- apache UID is 1000 and GID is 100. Note that you can have to change these
-  values to match with the owner of source code. To do that: ```usermod -u NEW_UID
-  -g NEW_GID apache```
-- Credentials for the MySQL database: ```root``` / ```bede```
-- You have access to FreshRSS source code in ```/var/www/html``` (be careful, if you
-  change it, it is changed on the host OS too)
-- If you want to install new packages, remember you use a CentOS: ```yum
-  install``` command is your friend…
-
 
 ## Install FreshRSS
 Last step is to install FreshRSS. Don't worry, you will not have to do that
 next time.
 
 1. Open a web browser on [127.0.0.1:8080](http://127.0.0.1:8080)
-2. Follow the different steps. Only information for database matter:
-	- Host: ```localhost```
-	- Username: ```root```
-	- Password: ```bede```
-	- Base: ```freshrss```
-	- Prefix: ```freshrss_```
+2. Use sqlite database
 3. Once FreshRSS is installed, enjoy!
 
 Changes about feeds (e.g. adding a feed, refresh items) are not saved when
